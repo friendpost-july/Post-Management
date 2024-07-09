@@ -153,5 +153,33 @@ paths:
                     success: false
                     message: Please contact POST team
                     data: null
+  /post/{postid}:
+    parameters:
+      - in: path
+        name: postid
+        required: true
+        schema:
+          type: integer
+    delete:
+      summary: "Delete a post"
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: "Post not found"
+  /user/{userid}:
+    delete:
+      summary: "Delete all posts of an user"
+      parameters:
+      - in: path
+        name: userid
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: "Post not found"
         
 

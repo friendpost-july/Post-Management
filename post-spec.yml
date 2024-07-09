@@ -20,9 +20,44 @@ components:
       properties:
         text:
           type: string
-
-
-        
+    getPost:
+      type: object
+      properties:
+        userIds:
+          type: array
+          items:
+            type: string
+          minItems: 0
+        postIds:
+          type: array
+          items:
+            type: string
+          minItems: 0
+        pageCount:
+          type: integer
+        duration:
+          type: integer
+          description: Posts to be fetched within the previous number of days.
+    getResponse:
+      type: object
+      properties:
+        posts:
+          type: array
+          items:
+            $ref: '#components/schemas/postobject'
+          minItems: 0
+    postobject:
+      type: object
+      properties:
+        userId:
+          type: string
+        postId:
+          type: string
+        creationTime:
+          type: string
+        content:
+          type: string
+  
 paths:
   /:
     post:
@@ -39,12 +74,57 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: string
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                    success: true
+                    message: Post created
+                    data: null
         '400':
           description: Invalid Input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: string
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                    success: false
+                    message: userId and text is the required parameter
+                    data: null
         '500':
           description: Internal server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: string
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                    success: false
+                    message: Please contact POST team
+                    data: null
 
-  /{postId}:
+
     patch:
       tags:
       - Posts
@@ -69,10 +149,93 @@ paths:
             application/json:
               schema:
                 type: object
-                example: 
-                  success: true
-                  message: "Post Updated Successfully"
-
+                properties:
+                  success:
+                    type: string
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                    success: true
+                    message: Post updated successfully
+                    data: null
+        '400':
+          description: Invalid Input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: string
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                    success: false
+                    message: Provide valid inputs
+                    data: null
+        '500':
+          description: Internal server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: string
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                    success: false
+                    message: Please contact POST team
+                    data: null
+  /post/{postid}:
+    parameters:
+      - in: path
+        name: postid
+        required: true
+        schema:
+          type: integer
+    delete:
+      summary: "Delete a post"
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: "Post not found"
+  /user/{userid}:
+    delete:
+      summary: "Delete all posts of an user"
+      parameters:
+      - in: path
+        name: userid
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: "Post not found"
+  /get:
+    post:
+      requestBody: 
+        content:
+          application/json:
+            schema:
+              $ref : '#/components/schemas/getPost'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getResponse'
         '400':
           description: Invalid Input
           content:
@@ -96,5 +259,5 @@ paths:
 
         '500':
           description: Internal server Error
-        
+
 

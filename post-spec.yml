@@ -28,16 +28,10 @@ components:
           items:
             type: string
           minItems: 0
-        postIds:
-          type: array
-          items:
-            type: string
-          minItems: 0
         pageCount:
           type: integer
-        duration:
+        limit:
           type: integer
-          description: Posts to be fetched within the previous number of days.
     getResponse:
       type: object
       properties:
@@ -222,7 +216,7 @@ paths:
           description: OK
         '404':
           description: "Post not found"
-  /get:
+  /list:
     post:
       requestBody: 
         content:

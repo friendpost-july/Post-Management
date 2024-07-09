@@ -186,10 +186,10 @@ paths:
                     success: false
                     message: Please contact POST team
                    
-  /{postid}:
+  /{postId}:
     parameters:
       - in: path
-        name: postid
+        name: postId
         required: true
         schema:
           type: integer
@@ -283,14 +283,14 @@ paths:
                     message: Post not found
 
 
-  /user/{userid}:
+  /user/{userId}:
     delete:
       summary: "Delete all posts of an user"
       tags:
       - Posts
       parameters:
       - in: path
-        name: userid
+        name: userId
         required: true
         schema:
           type: integer

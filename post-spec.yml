@@ -27,6 +27,21 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: string
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                    success: true
+                    message: Post created
+                    data: null
         '400':
           description: Invalid Input
         '500':

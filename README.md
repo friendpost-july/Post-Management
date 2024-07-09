@@ -1,2 +1,3 @@
 **POST Management**
-test
+
+This repository is for the Post service of the FriendPost Application

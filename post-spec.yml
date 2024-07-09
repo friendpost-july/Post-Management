@@ -22,9 +22,7 @@ components:
           type: integer
         text:
           type: string
-
-
-        
+  
 paths:
   /:
     post:
@@ -92,7 +90,6 @@ paths:
                     data: null
 
 
-
     patch:
       tags:
       - Posts
@@ -107,9 +104,54 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: string
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                    success: true
+                    message: Post updated successfully
+                    data: null
         '400':
           description: Invalid Input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: string
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                    success: false
+                    message: Provide valid inputs
+                    data: null
         '500':
           description: Internal server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: string
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                    success: false
+                    message: Please contact POST team
+                    data: null
         
 

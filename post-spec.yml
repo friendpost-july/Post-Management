@@ -22,6 +22,43 @@ components:
           type: integer
         text:
           type: string
+    getPost:
+      type: object
+      properties:
+        userIds:
+          type: array
+          items:
+            type: string
+          minItems: 0
+        postIds:
+          type: array
+          items:
+            type: string
+          minItems: 0
+        pageCount:
+          type: integer
+        duration:
+          type: integer
+          description: Posts to be fetched within the previous number of days.
+    getResponse:
+      type: object
+      properties:
+        posts:
+          type: array
+          items:
+            $ref: '#components/schemas/postobject'
+          minItems: 0
+    postobject:
+      type: object
+      properties:
+        userId:
+          type: string
+        postId:
+          type: string
+        creationTime:
+          type: string
+        content:
+          type: string
   
 paths:
   /:
@@ -181,5 +218,23 @@ paths:
           description: OK
         '404':
           description: "Post not found"
-        
+  /get:
+    post:
+      requestBody: 
+        content:
+          application/json:
+            schema:
+              $ref : '#/components/schemas/getPost'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getResponse'
+        '400':
+          description: Invalid Input
+        '500':
+          description: Internal server Error
+
 

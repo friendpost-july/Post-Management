@@ -25,13 +25,22 @@ components:
       properties:
         userIds:
           type: array
+          description: List of User IDs for which the posts must be fetched.
           items:
             type: string
-          minItems: 0
+          minItems: 1
         pageCount:
           type: integer
+          description: The current page number to be fetched.
         limit:
           type: integer
+        sort:
+          type: object
+          properties:
+            field:
+              type: string
+            direction:
+              type: string
     getResponse:
       type: object
       properties:
@@ -40,6 +49,8 @@ components:
           items:
             $ref: '#components/schemas/postobject'
           minItems: 0
+        totalPosts:
+          type: integer
     postobject:
       type: object
       properties:

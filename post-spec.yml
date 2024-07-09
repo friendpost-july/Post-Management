@@ -44,5 +44,37 @@ paths:
                     data: null
         '400':
           description: Invalid Input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: string
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                    success: false
+                    message: userId and text is the required parameter
+                    data: null
         '500':
           description: Internal server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: string
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                    success: false
+                    message: Please contact POST team
+                    data: null
+
+

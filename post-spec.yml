@@ -5,6 +5,7 @@ info:
 servers:
   - url: https://api.server/posts
 
+
 components:
   schemas:
     createPost:
@@ -14,10 +15,23 @@ components:
           type: integer
         text:
           type: string
+    updatePost:
+      type: object
+      properties:
+        userId:
+          type: integer
+        text:
+          type: string
+
+
         
 paths:
   /:
     post:
+      tags:
+      - Posts
+      summary: Create Post 
+      description: Use this Endpoint to create the Posts
       requestBody: 
         content:
           application/json:
@@ -31,3 +45,24 @@ paths:
           description: Invalid Input
         '500':
           description: Internal server Error
+
+    patch:
+      tags:
+      - Posts
+      summary: Update Post 
+      description: Use this Endpoint to update the Post
+      requestBody: 
+        content:
+          application/json:
+            schema:
+              $ref : '#/components/schemas/updatePost'
+
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Invalid Input
+        '500':
+          description: Internal server Error
+        
+

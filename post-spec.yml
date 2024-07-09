@@ -18,8 +18,6 @@ components:
     updatePost:
       type: object
       properties:
-        userId:
-          type: integer
         text:
           type: string
 
@@ -46,11 +44,18 @@ paths:
         '500':
           description: Internal server Error
 
+  /{postId}:
     patch:
       tags:
       - Posts
       summary: Update Post 
       description: Use this Endpoint to update the Post
+      parameters:
+        - in: path
+          name: postId
+          schema:
+            type: integer
+          required: true
       requestBody: 
         content:
           application/json:
@@ -60,8 +65,35 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                example: 
+                  success: true
+                  message: "Post Updated Successfully"
+
         '400':
           description: Invalid Input
+          content:
+            application/json:
+             schema:
+              type: object
+              example:
+                success: false
+                message: "Failed to update Post as the input is invalid"
+
+        '404':
+          description: Post does not exist
+          content:
+            application/json:
+             schema:
+              type: object
+              example:
+                success: false
+                message: "Failed to update Post as the existing post was not found"
+
+
         '500':
           description: Internal server Error
         

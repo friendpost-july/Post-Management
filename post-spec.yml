@@ -12,40 +12,12 @@ components:
       type: object
       properties:
         userId:
-          type: integer
+          type: string
         text:
           type: string
-    updatePost:
-      type: object
-      properties:
-        text:
+        visibility:
           type: string
-    getPost:
-      type: object
-      properties:
-        userIds:
-          type: array
-          items:
-            type: string
-          minItems: 0
-        postIds:
-          type: array
-          items:
-            type: string
-          minItems: 0
-        pageCount:
-          type: integer
-        duration:
-          type: integer
-          description: Posts to be fetched within the previous number of days.
-    getResponse:
-      type: object
-      properties:
-        posts:
-          type: array
-          items:
-            $ref: '#components/schemas/postobject'
-          minItems: 0
+
     postobject:
       type: object
       properties:
@@ -57,6 +29,46 @@ components:
           type: string
         content:
           type: string
+
+    getResponse:
+      type: object
+      properties:
+        posts:
+          type: array
+          items:
+            $ref: '#components/schemas/postObject'
+          minItems: 0
+        totalPosts:
+          type: integer
+  
+    getPost:
+      type: object
+      properties:
+        userIds:
+          type: array
+          description: List of User IDs for which the posts must be fetched.
+          items:
+            type: string
+          minItems: 1
+        pageCount:
+          type: integer
+          description: The current page number to be fetched.
+        limit:
+          type: integer
+        sort:
+          type: object
+          properties:
+            field:
+              type: string
+            direction:
+              type: string
+
+    updatePost:
+      type: object
+      properties:
+        text:
+          type: string
+    
   
 paths:
   /:
@@ -64,7 +76,7 @@ paths:
       tags:
       - Posts
       summary: Create Post 
-      description: Use this Endpoint to create the Posts
+      description: Use this Endpoint to create the Posts. Input values for visibility can be public or private 
       requestBody: 
         content:
           application/json:
@@ -85,10 +97,13 @@ paths:
                     type: string
                   data:
                     type: object
+                
               example:
                     success: true
-                    message: Post created
-                    data: null
+                    message: Post created successfully
+                    data: {postId: 1,
+                          visibility: "public"}
+
         '400':
           description: Invalid Input
           content:
@@ -100,12 +115,10 @@ paths:
                     type: string
                   message:
                     type: string
-                  data:
-                    type: object
               example:
                     success: false
                     message: userId and text is the required parameter
-                    data: null
+                    
         '500':
           description: Internal server Error
           content:
@@ -117,25 +130,74 @@ paths:
                     type: string
                   message:
                     type: string
-                  data:
-                    type: object
+              example:
+                    success: false
+                    message: Please contact POST team 
+
+    get:
+      summary: Get all the posts
+      description: Get all the posts
+      tags:
+      - Posts
+      requestBody: 
+        content:
+          application/json:
+            schema:
+              $ref : '#/components/schemas/getPost'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getResponse'
+        '400':
+          description: Invalid Input
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  success: false
+                  message: "Failed to update Post as the input is invalid"
+
+        '404':
+          description: Post does not exist
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  success: false
+                  message: "Failed to update Post as the existing post was not found"
+
+        '500':
+          description: Internal server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: string
+                  message:
+                    type: string
               example:
                     success: false
                     message: Please contact POST team
-                    data: null
-
-
+                   
+  /{postid}:
+    parameters:
+      - in: path
+        name: postid
+        required: true
+        schema:
+          type: integer
     patch:
       tags:
       - Posts
       summary: Update Post 
       description: Use this Endpoint to update the Post
-      parameters:
-        - in: path
-          name: postId
-          schema:
-            type: integer
-          required: true
       requestBody: 
         content:
           application/json:
@@ -154,12 +216,9 @@ paths:
                     type: string
                   message:
                     type: string
-                  data:
-                    type: object
               example:
                     success: true
                     message: Post updated successfully
-                    data: null
         '400':
           description: Invalid Input
           content:
@@ -171,12 +230,9 @@ paths:
                     type: string
                   message:
                     type: string
-                  data:
-                    type: object
               example:
                     success: false
                     message: Provide valid inputs
-                    data: null
         '500':
           description: Internal server Error
           content:
@@ -188,29 +244,50 @@ paths:
                     type: string
                   message:
                     type: string
-                  data:
-                    type: object
               example:
                     success: false
                     message: Please contact POST team
-                    data: null
-  /post/{postid}:
-    parameters:
-      - in: path
-        name: postid
-        required: true
-        schema:
-          type: integer
+
     delete:
       summary: "Delete a post"
+      tags:
+      - Posts
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: string
+                  message:
+                    type: string
+              example:
+                    success: true
+                    message: Post deleted successfully
         '404':
           description: "Post not found"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: string
+                  message:
+                    type: string
+              example:
+                    success: false
+                    message: Post not found
+
+
   /user/{userid}:
     delete:
       summary: "Delete all posts of an user"
+      tags:
+      - Posts
       parameters:
       - in: path
         name: userid
@@ -220,44 +297,33 @@ paths:
       responses:
         '200':
           description: OK
-        '404':
-          description: "Post not found"
-  /get:
-    post:
-      requestBody: 
-        content:
-          application/json:
-            schema:
-              $ref : '#/components/schemas/getPost'
-      responses:
-        '200':
-          description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/getResponse'
-        '400':
-          description: Invalid Input
-          content:
-            application/json:
-             schema:
-              type: object
+                type: object
+                properties:
+                  success:
+                    type: string
+                  message:
+                    type: string
               example:
-                success: false
-                message: "Failed to update Post as the input is invalid"
-
+                    success: true
+                    message: Post deleted for a particular user
         '404':
-          description: Post does not exist
+          description: "User or Post not found"
           content:
             application/json:
-             schema:
-              type: object
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: string
+                  message:
+                    type: string
               example:
-                success: false
-                message: "Failed to update Post as the existing post was not found"
+                    success: false
+                    message: User or Post not found
 
-
-        '500':
-          description: Internal server Error
+    
 
 

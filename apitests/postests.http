@@ -1,0 +1,47 @@
+# Get Public posts
+GET http://localhost:15001/posts
+###
+# Create new post -valid
+POST http://localhost:15001/posts
+Content-Type: application/json
+
+{
+    userid: "abcd",
+    text: "This is a post",
+    visibility: "public"
+
+}
+###
+# Create new post - Invalid visibility
+POST http://localhost:15001/posts
+Content-Type: application/json
+
+{
+    userid: "abcd",
+    text: "This is a post",
+    visibility: "wrong"
+
+}
+###
+GET http://localhost:15001/posts/abcd
+###
+# Update existing post - valid input
+PUT http://localhost:15001/posts/abcd
+Content-Type: application/json
+
+{
+    userid: "abcd",
+    text: "This is a post",
+    visibility: "wrong"
+}
+###
+# Delete existing Post
+DELETE http://localhost:15001/posts/abcd
+###
+# Search for posts
+POST http://localhost:15001/searchposts
+
+{
+    userids: ["ab", "cd", "ef"]
+    visibility: 'public'
+}

@@ -19,7 +19,7 @@ components:
         visibility:
           type: string
 
-    postobject:
+    postObject:
       type: object
       properties:
         userId:
@@ -45,17 +45,27 @@ components:
     getPost:
       type: object
       properties:
-        userIds:
-          type: array
-          description: List of User IDs for which the posts must be fetched.
-          items:
-            type: string
-          minItems: 1
         pageCount:
           type: integer
           description: The current page number to be fetched.
         limit:
           type: integer
+        filter:
+          type: object
+          properties:
+            includeusers:
+              type: array
+              items:
+                type: string
+              description: The response includes the posts only from these users. An array of userid's. includeusers and excludeusers are mutually exclusive list. Set only one property. If both are set, includeusers are only applicable
+            excludeusers:
+              type: array
+              items:
+                type: string
+              description: The response excludes the posts only from these users. An array of userid's.includeusers and excludeusers are mutually exclusive list. Set only one property. If both are set, includeusers are only applicable
+            visibility:
+              type: string
+              description: Filter to include either public or private posts. Omit this property to include both
         sort:
           type: object
           properties:
@@ -149,6 +159,7 @@ paths:
           application/json:
             schema:
               $ref : '#/components/schemas/getPost'
+
       responses:
         '200':
           description: OK

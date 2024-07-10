@@ -8,7 +8,7 @@ C4Context
 title "Post management Application diagram"
 
 System(postmanagement,"Post Management","")
-System(timeline,"Timerline")
+System(timeline,"Timeline")
 System(auth,"Authentication")
 
 Rel(timeline,postmanagement,"Get list of posts")

@@ -3,7 +3,8 @@ info:
   title: Post Management
   version: '1.0'
 servers:
-  - url: https://api.server/posts
+  - url: https://api.server/
+  - url: https://localhost:3000/
 
 
 components:
@@ -40,7 +41,7 @@ components:
           minItems: 0
         totalPosts:
           type: integer
-  
+
     getPost:
       type: object
       properties:
@@ -68,21 +69,25 @@ components:
       properties:
         text:
           type: string
-    
-  
+        active:
+          type: boolean
+
+
+
+
 paths:
-  /:
+  /posts:
     post:
       tags:
       - Posts
-      summary: Create Post 
-      description: Use this Endpoint to create the Posts. Input values for visibility can be public or private 
-      requestBody: 
+      summary: Create Post
+      description: Use this Endpoint to create the Posts. Input values for visibility can be public or private
+      requestBody:
         content:
           application/json:
             schema:
               $ref : '#/components/schemas/createPost'
-          
+
       responses:
         '200':
           description: OK
@@ -97,7 +102,7 @@ paths:
                     type: string
                   data:
                     type: object
-                
+
               example:
                     success: true
                     message: Post created successfully
@@ -118,7 +123,7 @@ paths:
               example:
                     success: false
                     message: userId and text is the required parameter
-                    
+
         '500':
           description: Internal server Error
           content:
@@ -132,14 +137,14 @@ paths:
                     type: string
               example:
                     success: false
-                    message: Please contact POST team 
+                    message: Please contact POST team
 
     get:
       summary: Get all the posts
       description: Get all the posts
       tags:
       - Posts
-      requestBody: 
+      requestBody:
         content:
           application/json:
             schema:
@@ -185,8 +190,8 @@ paths:
               example:
                     success: false
                     message: Please contact POST team
-                   
-  /{postId}:
+
+  /posts/{postId}:
     parameters:
       - in: path
         name: postId
@@ -196,9 +201,9 @@ paths:
     patch:
       tags:
       - Posts
-      summary: Update Post 
+      summary: Update Post
       description: Use this Endpoint to update the Post
-      requestBody: 
+      requestBody:
         content:
           application/json:
             schema:
@@ -283,7 +288,7 @@ paths:
                     message: Post not found
 
 
-  /user/{userId}:
+  /posts/user/{userId}:
     delete:
       summary: "Delete all posts of an user"
       tags:
@@ -323,7 +328,3 @@ paths:
               example:
                     success: false
                     message: User or Post not found
-
-    
-
-

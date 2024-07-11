@@ -176,7 +176,7 @@ paths:
                     type: string
               example:
                     message: Something went wrong, Please contact POST team
-    patch:
+    put:
       tags:
       - Posts
       summary: Update Post
@@ -287,7 +287,7 @@ paths:
                     message: User or Post not found
   /searchposts:
     post:
-      summary: get list of posts in pagination
+      summary: Lists the posts from users in pagination
       description: This API provides the list of APIs in pagination
       tags:
       - Posts

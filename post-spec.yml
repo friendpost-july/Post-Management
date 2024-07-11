@@ -1,10 +1,10 @@
 openapi: '3.0.3'
 info:
   title: Post Management
-  version: '1.0'
+  version: 'v1.0'
 servers:
-  - url: https://api.server/
-  - url: https://localhost:15001/
+  - url: https://api.server/v1/
+  - url: https://localhost:15001/v1/
 
 
 components:
@@ -152,8 +152,8 @@ paths:
                   message:
                     type: string
               example:
-                    success: true
-                    message: Post updated successfully
+
+                    post: {postId: 1, text: "post texts", visibility: "private"}
         '404':
           description: Resource not found
           content:
@@ -311,7 +311,7 @@ paths:
               schema:
                 type: object
                 example:
-                  message: "Failed to update Post as the input is invalid"
+                  message: "Provide valid filters."
 
         '500':
           description: Internal server Error
